@@ -31,6 +31,9 @@ class CategorieController extends Controller
         ]);
     }
 
+    public function a(){
+        return response()->json(['message'=>'cat est bien enregistrer'],201);
+    }
       //ajouter une categorie
     public function addcat(Request $Request){
        Categorie::create([
