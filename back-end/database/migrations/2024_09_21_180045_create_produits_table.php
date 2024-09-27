@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('proddesc');
             $table->string('methodePayement');
             //relation avec la table marque
-            $table->unsignedBigInteger('marque_id');
+            $table->unsignedBigInteger('marque_id')->nullable();
             $table->foreign('marque_id')->references('id')->on('marques');
             //relation avec la table categorie
-            $table->unsignedBigInteger('categorie_id');
+            $table->unsignedBigInteger('categorie_id')->nullable();
             $table->foreign('categorie_id')->references('id')->on('categories');
             $table->timestamps();
         });
