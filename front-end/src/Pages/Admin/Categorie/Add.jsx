@@ -21,7 +21,7 @@ export default function Add() {
 
     function handleSubmit(e) {
         e.preventDefault()
-        axios.post('http://localhost:8000/api/addcat', values).then(response => {
+        axios.post('http://localhost:8000/api/admin/addcat', values).then(response => {
             console.log(response.data);
           })
           .catch(error => {
