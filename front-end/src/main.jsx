@@ -22,7 +22,7 @@ createRoot(document.getElementById('root')).render(
     <Route path='/admin/addprod' element={<AddProd />} />
 
     <Route path='/admin/updateprod/:id' element={<UpdateProd />} />
-
+    
     <Route path='/user/home' element={<App />} />
 
     </Routes>

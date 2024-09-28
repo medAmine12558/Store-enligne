@@ -7,9 +7,17 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Photos;
 use App\Models\Produit;
 use Illuminate\Support\Str;
+use App\Models\Categorie;
+use App\Models\Marque;
+
+
 class ProduitController extends Controller
 {
-
+    public function showaddprod(){
+        $cat=Categorie::all();
+        $mrq=Marque::all();
+        return response()->json(['cat'=>$cat,'mrq'=>$mrq]);
+    }
     public function addprod(Request $R){
 
         $prod=Produit::create([
@@ -43,7 +51,8 @@ class ProduitController extends Controller
         return response()->json("le produit est bien enregistrer ", 201);
     }
     public function a($id){
-        $prod=Produit::with('photos')->where('id',$id)->first();
+
+        $prod=Produit::with('photos')->with('categories')->with('marques')->where('id',$id)->first();
         return response()->json(['produit'=>$prod,'photo_principal'=>"amine"]);
     }
 }
