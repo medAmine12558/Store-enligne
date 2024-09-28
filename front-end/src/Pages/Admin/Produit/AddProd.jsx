@@ -38,9 +38,7 @@ export default function Add({cat,mrq}){
             }));
           }
       };
-      if(values.photos){
-        values.photos.map(i=>(console.log(i)))
-      }
+    
       console.log(values.principal_photo);
     const handelSubmit= async(e)=>{
         e.preventDefault();

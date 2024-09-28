@@ -10,3 +10,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 Route::post('/admin/addcat',[CategorieController::class,'addcat']);
 Route::post('/admin/addprod',[ProduitController::class,'addprod']);
+Route::get('admin/getproduitupdate/{id}',[ProduitController::class,'a']);
