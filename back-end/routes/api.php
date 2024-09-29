@@ -11,4 +11,19 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::get('/admin/showaddprod',[ProduitController::class,'showaddprod']);
 Route::post('/admin/addcat',[CategorieController::class,'addcat']);
 Route::post('/admin/addprod',[ProduitController::class,'addprod']);
-Route::get('admin/getproduitupdate/{id}',[ProduitController::class,'a']);
+Route::get('admin/getproduitupdate/{id}',[ProduitController::class,'updateprodpage']);
+Route::get('admin/getphoto/{image}', function ($image) {
+    $path = public_path('images/' . $image);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+});

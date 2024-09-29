@@ -50,9 +50,11 @@ class ProduitController extends Controller
 
         return response()->json("le produit est bien enregistrer ", 201);
     }
-    public function a($id){
 
+    public function updateprodpage($id){
         $prod=Produit::with('photos')->with('categories')->with('marques')->where('id',$id)->first();
-        return response()->json(['produit'=>$prod,'photo_principal'=>"amine"]);
+        $cat=Categorie::all();
+        $mrq=Marque::all();
+        return response()->json(['produit'=>$prod,'cat'=>$cat,'mrq'=>$mrq]);
     }
 }
