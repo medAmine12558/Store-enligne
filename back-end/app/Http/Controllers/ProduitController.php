@@ -53,4 +53,33 @@ class ProduitController extends Controller
         }
         return response()->json("le produit est bien enregistrer ", 201);
     }
+    
+    public function rechercher(Request $request)
+    {
+        // Récupérer les filtres de recherche depuis la requête
+        $name = $request->input('name');
+        
+        // Construire la requête de recherche de manière dynamique
+        $query = Produit::query();
+
+        // Appliquer les filtres si disponibles
+        if ($name) {
+            $query->where('nom', 'like', '%' . $name . '%')
+                ->orWhereHas('categories', function($q) use ($name) {
+                    $q->where('catlib', 'like', '%' . $name . '%');
+                }
+            )
+            ->orWhereHas('marques', function($q) use ($name) {
+                $q->where('marqlib', 'like', '%' . $name . '%');
+            });
+        }
+
+        // Exécuter la requête et obtenir les résultats avec pagination
+        $produits = $query->paginate(15);
+
+        // Retourner les produits filtrés
+        return response()->json([
+            'produits' => $produits,
+        ]);
+    }
 }

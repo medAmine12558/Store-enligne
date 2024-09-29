@@ -31,8 +31,8 @@ return [
     | indicate that via the expire_on_close configuration option.
     |
     */
-
-    'lifetime' => env('SESSION_LIFETIME', 120),
+    'expire_on_close' => false,
+    'lifetime' => env('SESSION_LIFETIME', 525600),
 
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
@@ -48,7 +48,7 @@ return [
     */
 
     'encrypt' => env('SESSION_ENCRYPT', false),
-
+    
     /*
     |--------------------------------------------------------------------------
     | Session File Location
