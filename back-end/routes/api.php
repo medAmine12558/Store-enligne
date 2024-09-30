@@ -27,3 +27,4 @@ Route::get('admin/getphoto/{image}', function ($image) {
 
     return $response;
 });
+Route::post('admin/updateproduit/{id}', [ProduitController::class,'updateprod']);
