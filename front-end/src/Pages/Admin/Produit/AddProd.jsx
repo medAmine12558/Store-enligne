@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 
 
 
-export default function Add({cat,mrq}){
+export default function Add(){
+  const [cat, setCat] = useState();
+  const [mrq, setMrq] = useState();
     const [values,setValues]=useState({
         nom : "",
         prix : "",
@@ -16,6 +18,27 @@ export default function Add({cat,mrq}){
         photos : [],
         principal_photo : "",
     })
+    useEffect(()=>{
+      async function a(){
+      //await axios.get('http://localhost:8000/api/admin/showaddprod').then((res)=>{setCat(res.data.cat)}).then((res)=>{setMrq(res.data.mrq)})
+        const res=  await axios.get('http://localhost:8000/api/admin/showaddprod')
+        const data= res.data
+       setCat(data.cat)
+       setMrq(data.mrq)
+    }
+      a()
+      
+    },[])
+    if(!cat){
+      return  <div>Loading...</div>
+
+    }
+    console.log(cat)
+    
+     
+
+
+      //console.log(response.data)
     const handelValue = (event) => {
         const key = event.target.id;
         const value = event.target.value;
@@ -38,9 +61,7 @@ export default function Add({cat,mrq}){
             }));
           }
       };
-      if(values.photos){
-        values.photos.map(i=>(console.log(i)))
-      }
+    
       console.log(values.principal_photo);
     const handelSubmit= async(e)=>{
         e.preventDefault();
