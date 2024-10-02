@@ -60,7 +60,7 @@ class ProduitController extends Controller
         $name = $request->input('name');
         
         // Construire la requête de recherche de manière dynamique
-        $query = Produit::query();
+        $query = Produit::with(['categories', 'marques']);
 
         // Appliquer les filtres si disponibles
         if ($name) {
@@ -79,7 +79,10 @@ class ProduitController extends Controller
 
         // Retourner les produits filtrés
         return response()->json([
-            'produits' => $produits,
+            'produits' => $produits->items(),
+            'current_page' => $produits->currentPage(),
+            'last_page' => $produits->lastPage(),
+            'total' => $produits->total(),
         ]);
     }
 }

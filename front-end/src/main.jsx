@@ -13,11 +13,11 @@ import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-    <Routes>
-    <Route path='/admin/cat' element={<Add />} />
-    <Route path='/admin/addprod' element={<AddProd />} />
-    <Route path='/user/home' element={<App />} />
-    </Routes>
+      <Routes>
+        <Route path='/admin/cat' element={<Add />} />
+        <Route path='/admin/addprod' element={<AddProd />} />
+        <Route path='/user/home' element={<App />} />
+      </Routes>
     </BrowserRouter>
   </StrictMode>,
 )
