@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Slideshow from './Pages/User/Components/HomePage/SlideShow'
 import Footer from './Pages/User/Components/HomePage/Footer'
+import Button from '@mui/material/Button';
 
 
 function App() {
