@@ -38,3 +38,13 @@ Route::post('favorites/{productId}',[Favorite::class,'addToFavorites']);
 Route::get('favorites',[Favorite::class,'getFavorites']);
 Route::delete('/favorites/{productId}',[Favorite::class,'removeFromFavorites']);
 
+//recherche produit path
+Route::get('/search',[ProduitController::class,'rechercher']);
+
+
+
+
+Route::get('/test', function () {
+    return "Ceci est une chaîne de caractères.";
+});
+
