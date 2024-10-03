@@ -18,6 +18,8 @@ import Homepage from './Pages/Admin/Produit/Homepage.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+
+
     <Routes>
       <Route path='/admin'>
       <Route path='cat' element={<Add />} />
@@ -35,6 +37,7 @@ createRoot(document.getElementById('root')).render(
     <Route path='/a' element={<Example />}></Route>
 
     </Routes>
+
     </BrowserRouter>
   </StrictMode>,
 )

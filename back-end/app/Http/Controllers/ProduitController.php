@@ -93,6 +93,7 @@ class ProduitController extends Controller
         }
         return response()->json("le produit est bien modifier", 201);
     }
+
     public function getprods(){
         $prod = Produit::with('photos')->with('categories')->with('marques')->paginate(10); // 10 enregistrements par page
         return response()->json(['prod'=>$prod]);
@@ -109,6 +110,39 @@ class ProduitController extends Controller
             $pd->photos()->delete();
             $pd->delete();
         }
+
+
+    
+    public function rechercher(Request $request)
+    {
+        // Récupérer les filtres de recherche depuis la requête
+        $name = $request->input('name');
+        
+        // Construire la requête de recherche de manière dynamique
+        $query = Produit::with(['categories', 'marques']);
+
+        // Appliquer les filtres si disponibles
+        if ($name) {
+            $query->where('nom', 'like', '%' . $name . '%')
+                ->orWhereHas('categories', function($q) use ($name) {
+                    $q->where('catlib', 'like', '%' . $name . '%');
+                }
+            )
+            ->orWhereHas('marques', function($q) use ($name) {
+                $q->where('marqlib', 'like', '%' . $name . '%');
+            });
+        }
+
+        // Exécuter la requête et obtenir les résultats avec pagination
+        $produits = $query->paginate(15);
+
+        // Retourner les produits filtrés
+        return response()->json([
+            'produits' => $produits->items(),
+            'current_page' => $produits->currentPage(),
+            'last_page' => $produits->lastPage(),
+            'total' => $produits->total(),
+        ]);
 
     }
 }
