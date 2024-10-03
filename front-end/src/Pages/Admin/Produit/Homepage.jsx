@@ -1,15 +1,8 @@
 
 import React from "react";
 import { useState } from "react";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
 import { MdDeleteForever } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
-//import { DialogDelete } from "@/Components/DialogDelete";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { SidebarAdmin } from "../../../Components/Admin/SidebarAdmin";
@@ -119,11 +112,15 @@ export default function Homepage(){
     }
 
     const handel_Delete=()=>{
-        Inertia.delete('/deleteProdWithBox',  {data: { checkeddelete: checkeddelete }})
+        axios.delete('http://localhost:8000/api/admin/deleteProdWithBox',  {data: { checkeddelete: checkeddelete }}).then((res)=>{
+            console.log(res.data)
+        })
     }
 
     const hundel_Delete_One=()=>{
-        Inertia.delete('/deleteProd',  {data: { prod_to_del: prod_to_del }})
+        axios.delete('http://localhost:8000/api/admin/deleteProd',  {data: { prod_to_del: prod_to_del }}).then((res)=>{
+            console.log(res.data)
+        })
     }
 
     useEffect(()=>{
@@ -193,11 +190,11 @@ export default function Homepage(){
                 <tr>
                 <th className="py-2 px-4 border-b">
                         {showdeletebtn &&(
-                            <button onClick={()=>{setOpenDialogCheckBox(true) ; setProduct("les produit")}}>supprimer</button>
+                            <button onClick={()=>{setOpenDialogCheckBox(true) ;}}>supprimer</button>
                         )}
                         {openDialogCheckBox &&(
                             <DialogDelete
-                            obj={product}
+                            obj={'les produits selectioner'}
                             open={openDialogCheckBox}
                             onClose={() => setOpenDialogCheckBox(false)}
                             action={handel_Delete} />
@@ -232,11 +229,11 @@ export default function Homepage(){
                         )}
                         {i1.nom}
                     </td>
-                    <td className="py-2 px-4 border-b">{i1.categories.catlib}</td>
+                    <td className="py-2 px-4 border-b">{i1.categories &&(i1.categories.catlib)}</td>
                     <td className="py-2 px-4 border-b">{i1.prix} DHS</td>
-                    <td className="py-2 px-4 border-b">{i1.marques.marqlib}</td>
+                    <td className="py-2 px-4 border-b">{i1.marques &&(i1.marques.marqlib)}</td>
                     <td className="py-2 px-4 border-b text-blue-600">
-                        <button onClick={() => { setOpenDialog(true); setProd_to_del(i1) }} style={{ display: 'inline-block', cursor: 'pointer' }}>
+                        <button onClick={() => { setOpenDialog(true); setProd_to_del(i1.id) }} style={{ display: 'inline-block', cursor: 'pointer' }}>
                             <MdDeleteForever />
                         </button>
                         <a style={{ display: 'inline-block', marginLeft: '5px', cursor: 'pointer' }}><FaPen /></a>
