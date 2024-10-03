@@ -3,7 +3,6 @@ import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import image from '../../../../assets/image.png';
 
-
 const SlideShow = () => {
     return (
         <Slide>
