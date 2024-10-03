@@ -31,6 +31,10 @@ Route::get('admin/getphoto/{image}', function ($image) {
 });
 Route::post('admin/updateproduit/{id}', [ProduitController::class,'updateprod']);
 
+Route::delete('admin/deleteProdWithBox', [ProduitController::class,'delete_with_check_box']);
+Route::get('admin/getprods',[ProduitController::class,'getprods']);
+
+
 
 
 //les routes de favoris ajouter,consulter,supprimer
@@ -47,4 +51,5 @@ Route::get('/search',[ProduitController::class,'rechercher']);
 Route::get('/test', function () {
     return "Ceci est une chaîne de caractères.";
 });
+
 

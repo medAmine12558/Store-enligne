@@ -1,6 +1,11 @@
 import React, { useEffect, useState ,useRef } from "react";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { SidebarAdmin } from "../../../Components/Admin/SidebarAdmin";
+import TextField from '@mui/material/TextField';
+import './Updateprod.css';
+import Button from '@mui/material/Button';
+
 
 export function UpdateProd(){
     const {id}=useParams()
@@ -150,70 +155,81 @@ export function UpdateProd(){
 
   
    return(
+    <>
+            <div className="w-64 bg-gray-100 h-screen p-4" style={{ position: 'fixed', top: 0, left: 0}}>
+                <SidebarAdmin />
+            </div>
     <div className="container mx-auto px-4" style={{marginLeft:'260px',width:'390px',marginTop:'40px'}}>
          <form  style={{width:'580px'}} onSubmit={handelSubmit}>
          <div>
-         <label className="block text-sm font-medium text-gray-700">Nom du produit</label>
-         <input
-              type="text"
-              id="nom"
-              value={values.nom}
-             onChange={handelValue}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+         <TextField
+          id="nom"
+          label="Nom du produit"
+          value={values.nom}
+          onChange={handelValue}
+        />
          </div>
+         <br />
          <div>
-            <label className="block text-sm font-medium text-gray-700">Prix</label>
-            <input
-              type="number"
-              step="any"
-              id="prix"
-              value={values.prix}
-              onChange={handelValue}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Quantite</label>
-            <input
-              type="number"
-              id="qte_stock"
-              value={values.qte_stock}
-              onChange={handelValue}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-            <input
-              type="text"
-              id="proddesc"
-              value={values.proddesc}
-              onChange={handelValue}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Methode du Payement</label>
-            <input
-              type="text"
-              id="methodePayement"
-              value={values.methodePayement}
-              onChange={handelValue}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <select onChange={handelValue} id="categorie_id">
-            <option value={values.categorie_id}>{cat_default}</option>
-            {cat && (
-              cat.map((c,index)=>(
-                <option key={index} value={c.id}>{c.catlib}</option>
-              ))
-            )}
-          </select>
+         <TextField
+          id="prix"
+          type="number"
+          step="any"
+          label="Nom du produit"
+          value={values.prix}
+          onChange={handelValue}
+        />
 
-          
-          <select onChange={handelValue} id="marque_id" >
+          </div>
+          <br />
+          <div>
+          <TextField
+          id="qte_stock"
+          type="number"
+          label="Quantite"
+          value={values.qte_stock}
+          onChange={handelValue}
+        />
+          </div>
+          <br />
+          <div>
+          <TextField
+          id="qte_stock"
+          type="number"
+          label="Quantite"
+          value={values.qte_stock}
+          onChange={handelValue} />
+          </div>
+          <br />
+          <div>
+          <TextField
+          id="methodePayement"
+          type="text"
+          label="Methode du Payement"
+          value={values.methodePayement}
+          onChange={handelValue} />
+          </div>
+
+        
+          <br />
+          <label>Categorie</label>
+          <select
+              onChange={handelValue}
+              id="categorie_id"
+              className="block w-full pl-10 text-sm text-gray-700"
+              style={{border:'1px black solid'}}
+          >
+              <option value={values.categorie_id}>{cat_default}</option>
+              {cat && (
+              cat.map((c, index) => (
+              <option key={index} value={c.id}>{c.catlib}</option>
+              ))
+              )}
+            </select>
+
+          <br />
+              <label>Marque </label>
+          <select style={{border:'1px black solid'}} className="block w-full pl-10 text-sm text-gray-700" onChange={handelValue} id="marque_id" >
             <option value={values.marque_id}>{mrq_default}</option>
            {mrq && (
             mrq.map((m,index)=>(
@@ -223,9 +239,10 @@ export function UpdateProd(){
           </select>
           <label>Photo principale : </label><br />
           <input onChange={handelValue} type="file" id="principale_photo"  /><br />
-          {values.principale_photo && (
-            <div>
-              <img src={URL.createObjectURL(values.principale_photo)} />
+          <div className="relative mb-4" style={{position:'relative',width:'170 px'}} >
+            {values.principale_photo && (
+            <div className="flex justify-center mb-4">
+              <img src={URL.createObjectURL(values.principale_photo)}  alt="Image" className="w-48 h-48 object-cover rounded-md" />
               <button
                   type="button"
                   onClick={() => {
@@ -237,20 +254,24 @@ export function UpdateProd(){
                   className="absolute top-0 right-0 text-red-500 hover:text-red-700 p-1 bg-white rounded-full"
                     style={{
                          zIndex: 1,
+                         position:'absolute'
                      }}
                 >
                   X
                 </button>
             </div>
           )}
+          </div>
+          
           <label>Photos : </label><br />
-          <input onChange={handelValue} type="file" multiple id="photos"  />
+          <input onChange={handelValue} type="file" multiple id="photos" style={{display:'block'}} />
+          <br />
           {values.photos && (values.photos.map(
             (photo,index) =>{
             
                 return(
-                  <div>
-                  <img src={URL.createObjectURL(photo)} alt="photo"/>
+                  <div className="relative mb-4" style={{display:'inline-block',marginLeft:'22px'}}>
+                  <img src={URL.createObjectURL(photo)} alt="photo" style={{display:'inline-block'}} className="w-48 h-48 object-cover rounded-md"/>
                   <button
     type="button"
     onClick={() => {
@@ -266,18 +287,17 @@ export function UpdateProd(){
   >
     X
   </button>
-                </div>
+      </div>
                 )
-            
-                  
-                  
-                
-              
-              
             } 
           ))}
-          <input type="submit" value="submit" />
+          <br />
+          <br />
+          <Button  variant="contained">Valider</Button>
+          <br />
          </form>
     </div>
+    </>
+    
    )
 }
