@@ -98,6 +98,7 @@ class ProduitController extends Controller
         $prod = Produit::with('photos')->with('categories')->with('marques')->paginate(10); // 10 enregistrements par page
         return response()->json(['prod'=>$prod]);
     }
+
     public function delete_with_check_box(Request $r){
         $checkeddelete = $r->input('checkeddelete');
         $photoDir = public_path('images');
@@ -113,10 +114,39 @@ class ProduitController extends Controller
 
 
     }
-    public function rechercher(Request $request){
+
+
+
+    public function delete_with_check_box(Request $r) {
+        $checkeddelete = $r->input('checkeddelete');
+        $photoDir = public_path('images');
+
+        // Récupérer les produits avec leurs photos
+        $prods = Produit::with('photos')->whereIn('id', $checkeddelete)->get();
+
+        foreach ($prods as $prod) {
+            // Boucle sur chaque photo du produit
+            foreach ($prod->photos as $photo) {
+                Log::debug($photo->image);
+                File::delete($photoDir . '/' . $photo->image);  // Supprimer l'image du serveur
+                $photo->delete();  // Supprimer l'enregistrement de la photo dans la base de données
+            }
+
+            // Supprimer le produit après avoir supprimé les photos
+            $prod->delete();
+        }
+
+        return response()->json("les produits sont bien supprimés", 201);}
+
+
+
+
+    public function rechercher(Request $request)
+    {
+
         // Récupérer les filtres de recherche depuis la requête
         $name = $request->input('name');
-        
+
         // Construire la requête de recherche de manière dynamique
         $query = Produit::with(['categories', 'marques']);
 
@@ -143,5 +173,21 @@ class ProduitController extends Controller
             'total' => $produits->total(),
         ]);
 
+
     }
+
+      public function delete(Request $r){
+        $prod_to_del=Produit::with('photos')->find($r->input('prod_to_del'));
+        $photoDir = public_path('images');
+        foreach($prod_to_del->photos as $i){
+            File::delete($photoDir . '/' . $i->image);
+            $i->delete();
+        }
+        $prod_to_del->delete();
+        return response()->json('la photo est bien supprimer');
+      }
+
+
 }
+
+

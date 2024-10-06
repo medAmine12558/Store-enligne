@@ -33,6 +33,9 @@ Route::get('admin/getphoto/{image}', function ($image) {
 Route::post('admin/updateproduit/{id}', [ProduitController::class,'updateprod']);
 
 Route::delete('admin/deleteProdWithBox', [ProduitController::class,'delete_with_check_box']);
+
+Route::delete('admin/deleteProd',[ProduitController::class,'delete']);
+
 Route::get('admin/getprods',[ProduitController::class,'getprods']);
 
 

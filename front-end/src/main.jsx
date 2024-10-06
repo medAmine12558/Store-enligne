@@ -27,6 +27,7 @@ createRoot(document.getElementById('root')).render(
       <Route path='updateprod/:id' element={<UpdateProd />} />
       <Route path='homepage' element={<Homepage />}></Route>
       </Route>
+
     
     <Route path='/user/home' element={<App />} />
     <Route path='/a' element={<Example />}></Route>
