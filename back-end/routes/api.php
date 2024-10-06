@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\CategorieController;
@@ -32,16 +33,20 @@ Route::get('admin/getphoto/{image}', function ($image) {
 Route::post('admin/updateproduit/{id}', [ProduitController::class,'updateprod']);
 
 Route::delete('admin/deleteProdWithBox', [ProduitController::class,'delete_with_check_box']);
+
 Route::delete('admin/deleteProd',[ProduitController::class,'delete']);
+
 Route::get('admin/getprods',[ProduitController::class,'getprods']);
 
 
 
 
 //les routes de favoris ajouter,consulter,supprimer
-Route::post('favorites/{productId}',[Favorite::class,'addToFavorites']);
-Route::get('favorites',[Favorite::class,'getFavorites']);
-Route::delete('/favorites/{productId}',[Favorite::class,'removeFromFavorites']);
+Route::middleware('auth')->group(function () {
+    Route::post('wishlist/add/{produit}', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+    Route::post('wishlist/remove/{produit}', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+    Route::get('wishlist/view', [WishlistController::class, 'viewWishlist'])->name('wishlist.view');
+});
 
 //recherche produit path
 Route::get('/search',[ProduitController::class,'rechercher']);

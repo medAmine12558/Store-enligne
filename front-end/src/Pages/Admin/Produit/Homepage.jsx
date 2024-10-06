@@ -1,8 +1,10 @@
 
 import React from "react";
 import { useState } from "react";
+
 import { MdDeleteForever } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
+
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { SidebarAdmin } from "../../../Components/Admin/SidebarAdmin";
@@ -112,6 +114,8 @@ export default function Homepage(){
     }
 
     const handel_Delete=()=>{
+ertia.delete('/deleteProd',  {data: { prod_to_del: prod_to_del }})
+
         axios.delete('http://localhost:8000/api/admin/deleteProdWithBox',  {data: { checkeddelete: checkeddelete }}).then((res)=>{
             console.log(res.data)
         })
@@ -121,6 +125,7 @@ export default function Homepage(){
         axios.delete('http://localhost:8000/api/admin/deleteProd',  {data: { prod_to_del: prod_to_del }}).then((res)=>{
             console.log(res.data)
         })
+
     }
 
     useEffect(()=>{
@@ -190,11 +195,13 @@ export default function Homepage(){
                 <tr>
                 <th className="py-2 px-4 border-b">
                         {showdeletebtn &&(
+
                             <button onClick={()=>{setOpenDialogCheckBox(true) ;}}>supprimer</button>
                         )}
                         {openDialogCheckBox &&(
                             <DialogDelete
                             obj={'les produits selectioner'}
+
                             open={openDialogCheckBox}
                             onClose={() => setOpenDialogCheckBox(false)}
                             action={handel_Delete} />
@@ -218,7 +225,9 @@ export default function Homepage(){
                     </td>
                     <td className="py-2 px-4 border-b flex items-center">
                         {/* Ajouter du contenu ici, comme une image ou du texte */}
+
                         {product.image[0]?.map((i,index2)=>{
+
                             if(index2==index1){
                                 return(
                                     <img src={URL.createObjectURL(i)} alt="ok"  className="w-10 h-10 rounded-full mr-2" />
@@ -229,11 +238,13 @@ export default function Homepage(){
                         )}
                         {i1.nom}
                     </td>
+
                     <td className="py-2 px-4 border-b">{i1.categories &&(i1.categories.catlib)}</td>
                     <td className="py-2 px-4 border-b">{i1.prix} DHS</td>
                     <td className="py-2 px-4 border-b">{i1.marques &&(i1.marques.marqlib)}</td>
                     <td className="py-2 px-4 border-b text-blue-600">
                         <button onClick={() => { setOpenDialog(true); setProd_to_del(i1.id) }} style={{ display: 'inline-block', cursor: 'pointer' }}>
+
                             <MdDeleteForever />
                         </button>
                         <a style={{ display: 'inline-block', marginLeft: '5px', cursor: 'pointer' }}><FaPen /></a>

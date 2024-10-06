@@ -17,6 +17,8 @@ export function DialogDelete({obj,open, onClose,action}){
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+
+
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {obj} va etre supprimer , est ce que vous etes sur de le supprimer ?

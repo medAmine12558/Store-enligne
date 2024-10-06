@@ -18,7 +18,8 @@ class Favorite extends Controller
     }
 
     public function getFavorites(){
-        $favorites=session()->get('favorites',[]);
+        dd(session()->all());
+        $favorites = session()->get('favorites', []);
         return response()->json($favorites);
     }
 
