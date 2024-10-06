@@ -93,9 +93,27 @@ class ProduitController extends Controller
         }
         return response()->json("le produit est bien modifier", 201);
     }
-    
-    public function rechercher(Request $request)
-    {
+
+    public function getprods(){
+        $prod = Produit::with('photos')->with('categories')->with('marques')->paginate(10); // 10 enregistrements par page
+        return response()->json(['prod'=>$prod]);
+    }
+    public function delete_with_check_box(Request $r){
+        $checkeddelete = $r->input('checkeddelete');
+        $photoDir = public_path('images');
+        foreach($checkeddelete as $p){
+            $pd = Produit::with('photos')->find($p);
+            foreach($pd->photos->all() as $p1){
+                File::delete($photoDir . '/' . $p1->getOriginal('image'));
+            }
+
+            $pd->photos()->delete();
+            $pd->delete();
+        }
+
+
+    }
+    public function rechercher(Request $request){
         // Récupérer les filtres de recherche depuis la requête
         $name = $request->input('name');
         
@@ -124,5 +142,6 @@ class ProduitController extends Controller
             'last_page' => $produits->lastPage(),
             'total' => $produits->total(),
         ]);
+
     }
 }

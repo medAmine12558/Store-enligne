@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Marque;
 use App\Models\Categorie;
 use App\Models\Photos;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Produit extends Model
 {
@@ -24,6 +25,10 @@ class Produit extends Model
     public function photos()
     {
         return $this->hasMany(Photos::class);
+    }
+    public function wishlists(): HasMany
+    {
+        return $this->hasMany(Wishlist::class);
     }
     protected $fillable = [
         'nom',

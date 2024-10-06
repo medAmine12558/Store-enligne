@@ -1,0 +1,10 @@
+.relative {
+    position: relative;
+    width: 170 px;
+  }
+
+  .absolute {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
