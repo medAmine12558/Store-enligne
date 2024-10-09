@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 
 export function UpdateProd(){
     const {id}=useParams()
+    console.log(id)
     const[cat,setCat]=useState()
     const[mrq,setMrq]=useState()
     const[mrq_default,setMrq_default]=useState()
@@ -34,10 +35,13 @@ export function UpdateProd(){
         
         setMrq(data.mrq)
         setCat(data.cat)
-        if(data.produit.marques.marqlib && data.produit.categories.catlib){
-          setMrq_default(data.produit.marques.marqlib)
-        setCat_default(data.produit.categories.catlib)
+        if(data.produit.categories){
+          setCat_default(data.produit.categories.catlib)
+
         }
+        if(data.produit.marques){
+          setMrq_default(data.produit.marques.marqlib)
+      }
         
         // Mise à jour de l'état avec les nouvelles valeurs
         setValues({
@@ -145,6 +149,7 @@ export function UpdateProd(){
         formData.append('categorie_id',values.categorie_id)
       axios.post(`http://localhost:8000/api/admin/updateproduit/${id}`, formData).then(response => {
         console.log(response.data);
+        window.location.href = '/admin/homepage'
       })
       .catch(error => {
         console.error(error);
@@ -194,10 +199,10 @@ export function UpdateProd(){
           <br />
           <div>
           <TextField
-          id="qte_stock"
+          id="reduction"
           type="number"
-          label="Quantite"
-          value={values.qte_stock}
+          label="reduction"
+          value={values.reduction}
           onChange={handelValue} />
           </div>
           <br />
@@ -212,6 +217,14 @@ export function UpdateProd(){
 
         
           <br />
+          <div>
+          <TextField
+          id="proddesc"
+          type="text"
+          label="description"
+          value={values.proddesc}
+          onChange={handelValue} />
+          </div>
           <label>Categorie</label>
           <select
               onChange={handelValue}
@@ -293,7 +306,7 @@ export function UpdateProd(){
           ))}
           <br />
           <br />
-          <Button  variant="contained">Valider</Button>
+          <Button type="submit"  variant="contained">Valider</Button>
           <br />
          </form>
     </div>
