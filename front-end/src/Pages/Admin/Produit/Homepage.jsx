@@ -8,6 +8,12 @@ import { useCallback } from "react";
 import { SidebarAdmin } from "../../../Components/Admin/SidebarAdmin";
 import axios from 'axios';
 import { DialogDelete } from "../../../Components/Admin/DialogDelete";
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import Button from '@mui/material/Button';
 
 export default function Homepage(){
     const [openDialog, setOpenDialog] = React.useState(false);
@@ -19,7 +25,9 @@ export default function Homepage(){
     const [checkeddelete,setCheckeddelete]=useState([])
     const [showdeletebtn,setShowdeletebtn]=useState(false)
     const [prod_to_del,setProd_to_del]=useState()
+    const [prod_to_find,setProd_to_find]=useState()
     const [imageSrc, setImageSrc] = useState();
+    const [open_dialog_404,setOpen_dialog_404]=useState(false)
 
     useEffect(()=>{
         
@@ -38,6 +46,7 @@ export default function Homepage(){
                 })
                     
                 )
+                
               if(product){
                 
                   console.log('Photos : ', photoUrls);
@@ -55,7 +64,7 @@ export default function Homepage(){
         }
     }
         fetchdata()
-    },[])
+    },[,openDialog,openDialogCheckBox])
     useEffect(()=>{
         const fetchphoto=async()=>{
         const photoUrls = await Promise.all(
@@ -92,7 +101,7 @@ export default function Homepage(){
           }))
         }
         fetchphoto()
-    },[product.p])
+    },[product.p,openDialog,openDialogCheckBox])
     
     const handel_Check_Box_Change=useCallback((id)=>{
         const is_checked=checkeddelete.includes(id);
@@ -114,12 +123,15 @@ export default function Homepage(){
     const handel_Delete=()=>{
         axios.delete('http://localhost:8000/api/admin/deleteProdWithBox',  {data: { checkeddelete: checkeddelete }}).then((res)=>{
             console.log(res.data)
+            setOpenDialogCheckBox(false)
+           
         })
     }
 
     const hundel_Delete_One=()=>{
         axios.delete('http://localhost:8000/api/admin/deleteProd',  {data: { prod_to_del: prod_to_del }}).then((res)=>{
             console.log(res.data)
+            setOpenDialog(false)
         })
     }
 
@@ -154,6 +166,26 @@ export default function Homepage(){
             console.log(error)
         }
     }
+    
+//ajouter le fonctionnement de rechercher
+    function rechercher_produit(){
+        const chercher=document.getElementById('chercher').value
+        const c=document.getElementById('container')
+        console.log(chercher)
+        product.p.map(i=>{
+            console.log(i.prod.data)
+            if(i.prod.data.some(objet => objet.nom === chercher)){
+                setProd_to_find(chercher)
+                
+                console.log('oui il existe')//changer cette ligne par un api pour recuperer le produit a rechercher et l'affecter a product.p avec ecraser la valeur du p
+            }else{
+                setOpen_dialog_404(true)
+            }
+           
+    })
+        
+    }
+
     if(!product){
        return <p>loding</p>
     }
@@ -170,21 +202,45 @@ export default function Homepage(){
    */
   console.log(product)
    return(
-    
+        
         <div className="flex-1 p-6 bg-white shadow-md rounded-md">
+            <div className="w-64 bg-gray-100 h-screen p-4" style={{ position: 'fixed', top: 0, left: 0}}>
+                <SidebarAdmin />
+            </div>
             <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold">Products</h2>
+            <h2 className="text-2xl font-semibold"></h2>
             <div className="flex items-center space-x-2">
-            <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-md flex items-center">
-                    <i className="fas fa-filter mr-2"></i> Filter
-                </button>
-                <button className="px-4 py-2 bg-gray-100 text-gray-600 rounded-md">See All</button>
-                <button className="px-4 py-2 bg-purple-600 text-white rounded-md">+ Add Product</button>
+            
+                
+                <TextField id="chercher" label="chercher sur un produit" variant="outlined" />
+                <button onClick={rechercher_produit} className="px-4 py-2 bg-purple-600 text-white rounded-md">Rechercher</button>
             </div>
 
             </div>
             <div  className="flex">
-            <div className="ml-64 p-4">
+            <div id="container" className="ml-64 p-4">
+                {open_dialog_404 && (
+                    <Dialog
+                    open={open}
+                    onClose={()=>setOpen_dialog_404(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        ce produit n'existe pas
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                   
+                      <Button onClick={()=>setOpen_dialog_404(false)} autoFocus>
+                        fermer
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                )}
+            
             <table  style={{ display: 'inline-block' }} className="min-w-full bg-white">
             <thead>
                 <tr>
@@ -211,6 +267,8 @@ export default function Homepage(){
             {product.p.map((i, index0) => {
             return (  // Ajout du return ici
                 i.prod.data.map((i1, index1) => {
+                    if(prod_to_find){
+                    if(i1.nom==prod_to_find){
                 return (
                 <tr key={index1}>
                     <td className="py-2 px-4 border-b">
@@ -236,11 +294,41 @@ export default function Homepage(){
                         <button onClick={() => { setOpenDialog(true); setProd_to_del(i1.id) }} style={{ display: 'inline-block', cursor: 'pointer' }}>
                             <MdDeleteForever />
                         </button>
-                        <a style={{ display: 'inline-block', marginLeft: '5px', cursor: 'pointer' }}><FaPen /></a>
+                        <a href={`/admin/updateprod/${i1.id}`} style={{ display: 'inline-block', marginLeft: '5px', cursor: 'pointer' }}><FaPen /></a>
                     </td>
                 </tr>
             );
-        })
+            }}else{
+                return (
+                    <tr key={index1}>
+                        <td className="py-2 px-4 border-b">
+                            <input type="checkbox" onChange={() => handel_Check_Box_Change(i1.id)} checked={checkeddelete.includes(i1.id)} />
+                        </td>
+                        <td className="py-2 px-4 border-b flex items-center">
+                            {/* Ajouter du contenu ici, comme une image ou du texte */}
+                            {product.image[0]?.map((i,index2)=>{
+                                if(index2==index1){
+                                    return(
+                                        <img src={URL.createObjectURL(i)} alt="ok"  className="w-10 h-10 rounded-full mr-2" />
+                                    )
+                                }
+                                
+                            }
+                            )}
+                            {i1.nom}
+                        </td>
+                        <td className="py-2 px-4 border-b">{i1.categories &&(i1.categories.catlib)}</td>
+                        <td className="py-2 px-4 border-b">{i1.prix} DHS</td>
+                        <td className="py-2 px-4 border-b">{i1.marques &&(i1.marques.marqlib)}</td>
+                        <td className="py-2 px-4 border-b text-blue-600">
+                            <button onClick={() => { setOpenDialog(true); setProd_to_del(i1.id) }} style={{ display: 'inline-block', cursor: 'pointer' }}>
+                                <MdDeleteForever />
+                            </button>
+                            <a href={`/admin/updateprod/${i1.id}`} style={{ display: 'inline-block', marginLeft: '5px', cursor: 'pointer' }}><FaPen /></a>
+                        </td>
+                    </tr>
+                )
+            }})
     );
 })}
 
