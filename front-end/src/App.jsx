@@ -1,5 +1,6 @@
 //import { useState } from 'react'
 import './App.css'
+
 import Home from './Pages/User/Pages/Home';
 import CategoryPage from './Pages/User/Pages/CategoryPage'
 import { Routes, Route} from 'react-router-dom';
@@ -10,12 +11,14 @@ function App() {
 
   return (
     <>
+
       <Routes>
         <Route path='*' element={<Layout/>}>
           <Route index element={<Home/>}/>
           <Route path="category/:id/:catlib" element={<CategoryPage />} />
         </Route>
       </Routes>
+
     </>
   )
 }
