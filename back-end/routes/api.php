@@ -41,10 +41,16 @@ Route::delete('admin/deleteProd',[ProduitController::class,'delete']);
 
 Route::get('admin/getprods',[ProduitController::class,'getprods']);
 
+//home page routes 
+Route::get('/categories-with-products', [CategorieController::class, 'getCategoriesWithProducts']);
+Route::get('/categories/{id}/products', [CategorieController::class, 'getCategoryProducts']);
 
 
 
 //les routes de favoris ajouter,consulter,supprimer
+
+
+
 Route::middleware('auth')->group(function () {
     Route::post('wishlist/add/{produit}', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
     Route::post('wishlist/remove/{produit}', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
@@ -63,6 +69,8 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest')
     ->name('register');
 
+
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
+

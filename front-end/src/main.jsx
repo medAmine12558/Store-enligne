@@ -21,6 +21,11 @@ createRoot(document.getElementById('root')).render(
 
 
     <Routes>
+
+    <Route path='/admin/cat' element={<Add />} />
+    <Route path='/admin/addprod' element={<AddProd />} />
+    <Route path='/*' element={<App />} />
+
       <Route path='/admin'>
       <Route path='cat' element={<Add />} />
       <Route path='addprod' element={<AddProd />} />
@@ -31,6 +36,7 @@ createRoot(document.getElementById('root')).render(
     
     <Route path='/user/home' element={<App />} />
     <Route path='/a' element={<Example />}></Route>
+
 
     </Routes>
 

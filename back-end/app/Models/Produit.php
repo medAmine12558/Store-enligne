@@ -26,9 +26,15 @@ class Produit extends Model
     {
         return $this->hasMany(Photos::class);
     }
+
+    public function principalPhoto()
+    {
+        return $this->hasOne(Photos::class, 'produit_id')->where('is_principal', true);
+}
     public function wishlists(): HasMany
     {
         return $this->hasMany(Wishlist::class);
+
     }
     protected $fillable = [
         'nom',
