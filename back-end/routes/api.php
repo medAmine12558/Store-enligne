@@ -1,15 +1,18 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\CategorieController;
-use App\Http\Controllers\Favorite;
 use   App\Http\Controllers\ProduitController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
 Route::get('/admin/showaddprod',[ProduitController::class,'showaddprod']);
 Route::post('/admin/addcat',[CategorieController::class,'addcat']);
 Route::post('/admin/addprod',[ProduitController::class,'addprod']);
@@ -59,10 +62,15 @@ Route::get('/search',[ProduitController::class,'rechercher']);
 
 
 
-
-Route::get('/test', function () {
-    return "Ceci est une chaîne de caractères.";
-});
+Route::get('/test', function () {return "Ceci est une chaîne de caractères.";});
 
 
+Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->middleware('guest')
+    ->name('register');
+
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->middleware('guest')
+    ->name('login');
 
