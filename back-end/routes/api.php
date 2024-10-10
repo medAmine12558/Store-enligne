@@ -17,3 +17,8 @@ Route::post('/admin/addprod',[ProduitController::class,'addprod']);
 Route::post('favorites/{productId}',[Favorite::class,'addToFavorites']);
 Route::get('favorites',[Favorite::class,'getFavorites']);
 Route::delete('/favorites/{productId}',[Favorite::class,'removeFromFavorites']);
+
+//home page routes 
+Route::get('/categories-with-products', [CategorieController::class, 'getCategoriesWithProducts']);
+Route::get('/categories/{id}/products', [CategorieController::class, 'getCategoryProducts']);
+
