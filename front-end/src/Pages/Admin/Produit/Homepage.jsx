@@ -14,6 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function Homepage(){
     const [openDialog, setOpenDialog] = React.useState(false);
@@ -28,13 +29,16 @@ export default function Homepage(){
     const [prod_to_find,setProd_to_find]=useState()
     const [imageSrc, setImageSrc] = useState();
     const [open_dialog_404,setOpen_dialog_404]=useState(false)
+    const navigate = useNavigate();
+    const [pagination, setPagination] = useState({});
+    //const [valeur, setValeur] = useState('');
 
     useEffect(()=>{
         
         const fetchdata=async()=>{
         try{
             
-                const response=await axios.get('http://localhost:8000/api/admin/getprods')
+                const response=await axios.get(`http://localhost:8000/api/admin/getprods`)
                 const data=response.data
                 setProduct((prevProduct)=>({
                     ...prevProduct,
@@ -46,6 +50,7 @@ export default function Homepage(){
                 })
                     
                 )
+                setPagination(data.prod)
                 
               if(product){
                 
@@ -143,10 +148,39 @@ export default function Homepage(){
         }
 
     },[checkeddelete])
+    
+    const handlePageChange = async(page) => {
+        await axios.get(`http://localhost:8000/api/admin/getprods?page=${page}`)
+          .then(response => {
+            console.log('response :',response.data)
+            setProduct((prevProduct)=>({
+                ...prevProduct,
+                p:[]
+            }))
+            setProduct(((prevProduct)=>({
+                ...prevProduct,
+                p:[...prevProduct.p,response.data]
+            }))
+                );
+          })
+          .catch(error => {
+            console.error(error);
+          });
+          console.log('dans page :',product)
+      };
+      console.log('pagination : ',pagination)
 
+    /*  const handleChangeRecherche = (event) => {
+        setValeur(event.target.value);
+      };
+
+      
+      if (valeur === '') {
+        handlePageChange(1)
+      }
     if(!product){
         return <div>Loading...</div>
-    }
+    }*/
 
   
   console.log(product)
@@ -186,6 +220,7 @@ export default function Homepage(){
         
     }
 
+
     if(!product){
        return <p>loding</p>
     }
@@ -212,7 +247,7 @@ export default function Homepage(){
             <div className="flex items-center space-x-2">
             
                 
-                <TextField id="chercher" label="chercher sur un produit" variant="outlined" />
+                <TextField  id="chercher" label="chercher sur un produit" variant="outlined" />
                 <button onClick={rechercher_produit} className="px-4 py-2 bg-purple-600 text-white rounded-md">Rechercher</button>
             </div>
 
@@ -347,24 +382,21 @@ export default function Homepage(){
             )
         }
         <div className="flex justify-between items-center mt-4">
+  {pagination.prev && (
+    <button onClick={() => handlePageChange(pagination.prev.page)}>Previous</button>
+  )}
+  {pagination.links && pagination.links.map((link, index) => (
+    <button key={index} onClick={() => handlePageChange(link.label)}>
+      {link.label}
+    </button>
+  ))}
+  {pagination.next && (
+    <button onClick={() => handlePageChange(pagination.next.page)}>Next</button>
+  )}
+  <span>
+    Page {pagination.current_page} of {pagination.last_page}
+  </span>
 
-        {product.p.map((l)=>{
-             l.links?.map((link, index) => {
-                if (link.label !== 'Next &raquo;') {
-                return (
-                    <button
-                        key={index}
-                        className={`px-4 py-2 ${link.active ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-600'} rounded-md`}
-                        onClick={() => Inertia.get(link.url)}
-                    >
-                        {link.label}
-                    </button>
-                );
-                }
-                return null; // This will not render the button for "Next »"
-            })
-        })
-       }
         </div>
         </div>
     )
