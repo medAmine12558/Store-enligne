@@ -99,23 +99,6 @@ class ProduitController extends Controller
         return response()->json(['prod'=>$prod]);
     }
 
-    public function delete_with_check_box(Request $r){
-        $checkeddelete = $r->input('checkeddelete');
-        $photoDir = public_path('images');
-        foreach($checkeddelete as $p){
-            $pd = Produit::with('photos')->find($p);
-            foreach($pd->photos->all() as $p1){
-                File::delete($photoDir . '/' . $p1->getOriginal('image'));
-            }
-
-            $pd->photos()->delete();
-            $pd->delete();
-        }
-
-
-    }
-
-
 
     public function delete_with_check_box(Request $r) {
         $checkeddelete = $r->input('checkeddelete');

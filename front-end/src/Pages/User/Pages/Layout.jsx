@@ -6,7 +6,7 @@ export default function Layout(){
     return(
         <>
         <Header/>
-        <main className="pt-20">
+        <main className="pt-20 bg-gray-100">
             <Outlet/>
         </main>
         <Footer/>

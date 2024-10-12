@@ -62,7 +62,7 @@ public function getCategoryProducts($id)
         ->with(['photos' => function ($query) {
             $query->where('is_principal', true); // Fetch only the principal photo
         }])
-        ->paginate(16); // Adjust number per page
+        ->paginate(8); // Adjust number per page
 
     // Format the response to include the principal photo only
     $formattedProducts = $products->map(function ($product) {
