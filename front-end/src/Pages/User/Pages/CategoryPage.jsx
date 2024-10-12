@@ -21,6 +21,10 @@ const CategoryPage = () => {
             });
     }, [id, currentPage]);
 
+    const handlePageClick = (page) => {
+        setCurrentPage(page); // Set the clicked page as the current page
+    };
+
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
@@ -33,11 +37,13 @@ const CategoryPage = () => {
         }
     };
 
+    const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+
     return (
         <div className="category-page">
-            <h1 className="text-center text-2xl font-bold"> {catlib}</h1>
+            <h1 className="text-center text-2xl font-bold py-4 my-4"> {catlib}</h1>
 
-            <div className="product-grid grid grid-cols-4 gap-4">
+            <div className="product-grid grid grid-cols-4 gap-4 py-4 px-2">
                 {products.map(produit => (
                     <ProductCard
                         key={produit.id}
@@ -48,20 +54,34 @@ const CategoryPage = () => {
             </div>
 
             {/* Pagination Controls */}
-            <div className="pagination-controls flex justify-between mt-4">
+            <div className="pagination-controls flex justify-center items-center  py-6 my-6 ">
                 <button
                     disabled={currentPage === 1}
                     onClick={handlePrevPage}
-                    className="bg-gray-300 px-4 py-2 rounded"
+                    className="bg-none text-amber-800 uppercase px-4 py-2 font-bold hover:text-amber-400"
                 >
-                    Previous
+                    Précédent
                 </button>
+
+                {/* Render clickable page numbers */}
+                <div className="page-numbers flex gap-2 mx-4">
+                    {pageNumbers.map(page => (
+                        <button
+                            key={page}
+                            onClick={() => handlePageClick(page)}
+                            className={`px-4 py-2 rounded-full font-bold ${page === currentPage ? 'bg-amber-400 text-white hover:bg-amber-800' : 'bg-none text-amber-800 hover:text-amber-400'}`}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                </div>
+
                 <button
                     disabled={currentPage === totalPages}
                     onClick={handleNextPage}
-                    className="bg-gray-300 px-4 py-2 rounded"
+                    className="bg-none text-amber-800 uppercase px-4 py-2 font-bold"
                 >
-                    Next
+                    Suivant
                 </button>
             </div>
         </div>

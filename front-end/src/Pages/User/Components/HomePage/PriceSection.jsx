@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import useDiscount from "../hooks/useDiscount";
-import React from 'react';
+
 
 const PriceSection = ({ prix, reduction = 0 }) => {
   const result = useDiscount({ prix: prix, reduction: reduction });
@@ -10,16 +11,16 @@ const PriceSection = ({ prix, reduction = 0 }) => {
   }
 
   return (
-    <div className="leading-3 w-full ">
-      <h2 className="font-medium text-red-600 text-xl text-center">
+    <div className="leading-3 w-full flex px-2">
+      <p className="grow font-medium text-red-600 text-xl text-center w-1/3">
         ${result.toFixed(2)}
-      </h2>
-      <span className="mr-2 text-sm line-through opacity-70 dark:text-white text-amber-600 ">
+      </p>
+      <p className="flex-none w-1/4 mr-2 text-sm line-through opacity-70 dark:text-white text-amber-600 py-1 pr-0">
         ${prix}
-      </span>
-      <span className="text-sm font-semibold dark:text-white ">
+      </p>
+      <p className="flex-none w-1/4 text-sm font-semibold text-amber-950 pr-0 py-1 ">
         -{reductionVal}%
-      </span>
+      </p>
     </div>
   );
 };
